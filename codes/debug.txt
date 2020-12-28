@@ -1,0 +1,3 @@
+data1_in in ALU =           0
+data2_in in ALU =           0
+data_o in ALU =          5
