@@ -60,20 +60,20 @@ output reg  [4:0]        RDaddr_o, RS1addr_o, RS2addr_o;
 
 
 always @(posedge clk_i) begin
-  if (rst_i) begin
-    ALUSrc_o <= 1'b0;
-    RegWrite_o <= 1'b0;
-    MemWrite_o <= 1'b0;
-    MemRead_o <= 1'b0;
-    MemtoReg_o <= 1'b0;
-    RS1data_o <= 32'b0;
-    RS2data_o <= 32'b0;
-    imm_o <= 32'b0;
-    funct_o <= 10'b0;
-    RDaddr_o <= 5'b0;
-    RS1addr_o <= 5'b0;
-    RS2addr_o <= 5'b0;
-  end
+  // if (rst_i) begin
+  //   ALUSrc_o <= 1'b0;
+  //   RegWrite_o <= 1'b0;
+  //   MemWrite_o <= 1'b0;
+  //   MemRead_o <= 1'b0;
+  //   MemtoReg_o <= 1'b0;
+  //   RS1data_o <= 32'b0;
+  //   RS2data_o <= 32'b0;
+  //   imm_o <= 32'b0;
+  //   funct_o <= 10'b0;
+  //   RDaddr_o <= 5'b0;
+  //   RS1addr_o <= 5'b0;
+  //   RS2addr_o <= 5'b0;
+  // end
   if (~mem_stall_i && start_i) begin
     ALUOp_o <= ALUOp_i;
 	  ALUSrc_o <= ALUSrc_i;

@@ -149,6 +149,11 @@ always@(posedge clk_i or posedge rst_i) begin
         case(state)
             STATE_IDLE: begin
                 if(cpu_req && !hit) begin      // wait for request
+                mem_enable <= 1'b1;          //
+                  if(sram_dirty) begin       //
+                    mem_write   <= 1'b1;     //
+                    write_back  <= 1'b1;     //
+                  end
                     state <= STATE_MISS;
                 end
                 else begin

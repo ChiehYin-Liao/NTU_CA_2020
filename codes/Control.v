@@ -30,10 +30,10 @@ reg      [1:0]      ALUOp_o;
 reg                 ALUSrc_o;
 
 assign RegWrite_o = (~NoOp_i) && ((Op_i == 7'b0010_011) || (Op_i == 7'b0000_011) || (Op_i == 7'b0110_011));
-assign Branch_o = (Op_i == 7'b1100_011);
-assign MemWrite_o = (Op_i == 7'b0100_011);
-assign MemRead_o = (Op_i == 7'b0000_011);
-assign MemtoReg_o = (Op_i == 7'b0000_011);
+assign Branch_o =  (~NoOp_i) && (Op_i == 7'b1100_011);
+assign MemWrite_o =  (~NoOp_i) && (Op_i == 7'b0100_011);
+assign MemRead_o =  (~NoOp_i) && (Op_i == 7'b0000_011);
+assign MemtoReg_o =  (~NoOp_i) && (Op_i == 7'b0000_011);
 
 // set controls
 always@(Op_i) begin

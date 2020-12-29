@@ -32,9 +32,8 @@ always @(posedge clk_i) begin
   if (start_i) begin
       if (flush_i == 1'b1) begin
           instr_o <= 32'b0;
-          pc_o <= 32'b0;
       end
-      else if (~stall_i | ~mem_stall_i) begin
+      else if ( ~(stall_i | mem_stall_i) ) begin
       	  pc_o <= pc_i;
           instr_o <= instr_i;
       end

@@ -36,15 +36,15 @@ output reg   [4:0]     RDaddr_o;
 
 
 always @(posedge clk_i) begin
-  if (rst_i) begin
-    RegWrite_o <= 1'b0;
-    MemtoReg_o <= 1'b0;
-    MemRead_o <= 1'b0;
-    MemWrite_o <= 1'b0;
-    ALU_rst_o <= 1'b0;
-    writeData_o <= 32'b0;
-    RDaddr_o <= 5'b0;
-  end
+  // if (rst_i) begin
+  //   RegWrite_o <= 1'b0;
+  //   MemtoReg_o <= 1'b0;
+  //   MemRead_o <= 1'b0;
+  //   MemWrite_o <= 1'b0;
+  //   ALU_rst_o <= 32'b0;
+  //   writeData_o <= 32'b0;
+  //   RDaddr_o <= 5'b0;
+  // end
   if (~mem_stall_i && start_i) begin
     RegWrite_o <= RegWrite_i;
     MemtoReg_o <= MemtoReg_i;
