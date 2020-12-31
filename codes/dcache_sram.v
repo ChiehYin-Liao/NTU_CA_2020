@@ -44,7 +44,7 @@ always@(posedge clk_i or posedge rst_i) begin
                 tag[i][j] <= 25'b0;
                 data[i][j] <= 256'b0;
                 LRU[i][j] <= 1'b0;
-            end
+            end$
         end
     end
     if (enable_i && write_i) begin
@@ -80,7 +80,9 @@ always@(posedge clk_i or posedge rst_i) begin
     end
 end
 
-// 2. Read miss: Read from memory
+// Read Data
+// TODO: tag_o=? data_o=? hit_o=?
+
 always@(posedge clk_i) begin
   if (enable_i) begin
     if (hit_0) begin
@@ -95,19 +97,17 @@ always@(posedge clk_i) begin
   end
 end
 
-// Read Data
-// TODO: tag_o=? data_o=? hit_o=?
-
 wire hit_0, hit_1;
 
 assign hit_0 = tag[addr_i][0][22:0] == tag_i[22:0] && tag[addr_i][0][24] == 1'b1;
 assign hit_1 = tag[addr_i][1][22:0] == tag_i[22:0] && tag[addr_i][1][24] == 1'b1;
 
-assign hit_o = (hit_0 | hit_1);
+
 assign data_o = hit_0 ? data[addr_i][0] : hit_1 ? data[addr_i][1] :
             (LRU[addr_i][0] == 1'b0)? data[addr_i][0] : data[addr_i][1];
 assign tag_o = hit_0 ? tag[addr_i][0] : hit_1 ? tag[addr_i][1] :
             (LRU[addr_i][0] == 1'b0)? tag[addr_i][0] : tag[addr_i][1];
+assign hit_o = (hit_0 | hit_1);
 
 
 endmodule

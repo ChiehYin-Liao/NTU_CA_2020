@@ -82,13 +82,7 @@ initial begin
 
     CPU.IF_ID.instr_o = 32'b0;
 
-
-
     CPU.ID_EX.ALUSrc_o = 1'b0;
-    // CPU.ID_EX.RS1data_o = 32'b0;
-    // CPU.ID_EX.RS2data_o = 32'b0;
-    // CPU.ID_EX.RegWrite_o = 1'b0;
-    // CPU.ID_EX.RDaddr_o = 4'b0;
     CPU.ID_EX.RegWrite_o = 1'b0;
     CPU.ID_EX.MemWrite_o = 1'b0;
     CPU.ID_EX.MemRead_o = 1'b0;
@@ -101,7 +95,6 @@ initial begin
     CPU.ID_EX.RS1addr_o = 5'b0;
     CPU.ID_EX.RS2addr_o = 5'b0;
 
-
     CPU.EX_MEM.RegWrite_o = 1'b0;
     CPU.EX_MEM.RDaddr_o = 4'b0;
     CPU.EX_MEM.MemtoReg_o = 1'b0;
@@ -112,8 +105,6 @@ initial begin
     CPU.EX_MEM.RDaddr_o = 5'b0;
 
 
-    // CPU.MEM_WB.RegWrite_o = 1'b0;
-    // CPU.MEM_WB.RDaddr_o = 4'b0;
     CPU.MEM_WB.RegWrite_o = 1'b0;
     CPU.MEM_WB.MemtoReg_o = 1'b0;
     CPU.MEM_WB.ReadData_o = 32'b0;
@@ -123,7 +114,7 @@ initial begin
 
     // Load instructions into instruction memory
     // Make sure you change back to "instruction.txt" before submission
-    $readmemb("instruction_3.txt", CPU.Instruction_Memory.memory);
+    $readmemb("instruction.txt", CPU.Instruction_Memory.memory);
 
     // Open output file
     // Make sure you change back to "output.txt" before submission
@@ -164,20 +155,11 @@ always@(posedge Clk) begin
     end
 
 
-    // $fdisplay(outfile, "CPU.dcache.hit = %b, CPU.dcache.cpu_req = %b", CPU.dcache.hit, CPU.dcache.cpu_req);
 
 
     // print PC
     $fdisplay(outfile, "cycle = %0d, Start = %b\nPC = %d", counter, Start, CPU.PC.pc_o);
-
-    // $fdisplay(outfile, "CPU.Instruction_Memory.instr_o = %b",CPU.Instruction_Memory.instr_o);
-    // $fdisplay(outfile, "CPU.IF_ID.stall_i = %b, CPU.IF_ID.mem_stall_i = %b", CPU.IF_ID.stall_i, CPU.IF_ID.mem_stall_i);
-    // $fdisplay(outfile, "CPU.dcache.cpu_stall_o = %b", CPU.dcache.cpu_stall_o);
-    // $fdisplay(outfile, "CPU.flag = %b", flag);
-    // $fdisplay(outfile, "CPU.dcache.cpu_MemRead_i = %b", CPU.dcache.cpu_MemRead_i);
-    // $fdisplay(outfile, "CPU.Control.MemRead_o = %b", CPU.Control.MemRead_o);
-
-
+    $fdisplay(outfile, "w_hit_data = %h", CPU.dcache.w_hit_data);
 
     // print Registers
     // DO NOT CHANGE THE OUTPUT FORMAT
@@ -228,7 +210,6 @@ always@(posedge Clk) begin
                 $fdisplay(outfile2, "Cycle: %d, Write Hit , Address: %h, Write Data: %h", counter, CPU.dcache.cpu_addr_i, CPU.dcache.cpu_data_i);
             else if(CPU.dcache.cpu_MemRead_i)
                 $fdisplay(outfile2, "Cycle: %d, Read Hit  , Address: %h, Read Data : %h", counter, CPU.dcache.cpu_addr_i, CPU.dcache.cpu_data_o);
-                // $fdisplay(outfile2, "cpu_req: %b, hit : %b", CPU.dcache.cpu_req, CPU.dcache.hit);
         end
         flag = 1'b0;
     end
