@@ -8,12 +8,13 @@ Sangwoo Yoo (B04902126): Wrote report and added graphs for explanation, particip
 
 ## Modules & Descriptions
 
-Using CPU.v from project 1, we build upon it and implement this more advanced and realistic datapath that takes into consideration the fact that data memory is in reality much slower and has much more delay than in our previous simulation. On-chip data cache (DRAM) is a resource in high demand and low supply, and so a memory modularity for effective and quick communication between data memory and cache is critical. We determine in dcache_top.v whether its a hit or miss. If it's a hit, then we read/write the memory address, and if it's a miss, then we call the cache controller logic.
+Using CPU.v from project 1, we build upon it and implement this more advanced and realistic datapath that takes into consideration the fact that data memory is in reality much slower and has much more delay than in our previous simulation. On-chip data cache (DRAM) is a resource in high demand and low supply, and so a memory modularity for effective and quick communication between data memory and cache is critical. We determine in dcache_controller.v whether its a hit or miss.
 
 ### dcache_controller.v
 This module functions to determine hit or miss. dcache_controller is responsible for connecting with the SRAM interface and the Data_Memory interface. The finite state machine for the cache controller is illustrated below.
 ![FSM](FSM.png)
-As shown in our FSM, the controller alternates between the above 5 states. The FSM starts at an Idle state, and waits until there is a request (if no request, the state will not change). Upon receiving a request, the state changes to Miss, and there are two possibilities; if the SRAM is dirty, the state will change to Writeback; otherwise, Readmiss will be initiated. If it changes to to Readmiss, Readmiss will wait to receive ack. If changes to to Writeback, then it will stay in Writeback until receiving an ack to go to Readmiss. Readmiss will wait to receive an ack before going to the Readmissok state before finally unconditionally returning to the Idle state.
+
+As shown in our FSM, the controller alternates between the above 5 states. The FSM starts at an Idle state, and waits until there is a request (if no request or memory hit, the state will not change). Upon receiving a request and a miss, the state changes to Miss, and there are two possibilities; if the SRAM is dirty, controller will set write_back, mem_enable, mem_write true then change state to Writeback; otherwise, controller will set mem_enable true then Readmiss state will be initiated. If it changes to to Readmiss, Readmiss will wait to receive ack. If changes to to Writeback, then it will stay in Writeback until receiving an ack to go to Readmiss. Readmiss will wait to receive an ack (set mem_enable = 0, mem_write = 0, cache_write = 1) before going to the Readmissok state before finally unconditionally returning to the Idle state.
 
 The architecture and connection between the CPU and the Data Memory is illustrated here. We initialize our off-chip data_memory module in testbench.v.
 ![Architecture](architecture.jpg)
