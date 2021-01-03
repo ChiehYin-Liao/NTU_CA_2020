@@ -159,7 +159,6 @@ always@(posedge Clk) begin
 
     // print PC
     $fdisplay(outfile, "cycle = %0d, Start = %b\nPC = %d", counter, Start, CPU.PC.pc_o);
-    $fdisplay(outfile, "w_hit_data = %h", CPU.dcache.w_hit_data);
 
     // print Registers
     // DO NOT CHANGE THE OUTPUT FORMAT

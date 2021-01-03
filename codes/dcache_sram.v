@@ -44,7 +44,7 @@ always@(posedge clk_i or posedge rst_i) begin
                 tag[i][j] <= 25'b0;
                 data[i][j] <= 256'b0;
                 LRU[i][j] <= 1'b0;
-            end$
+            end
         end
     end
     if (enable_i && write_i) begin
