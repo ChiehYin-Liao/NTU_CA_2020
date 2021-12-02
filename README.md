@@ -10,27 +10,29 @@ Sangwoo Yoo (B04902126): Wrote report and added graphs for explanation, particip
 
 ## Modules & Descriptions
 
-Using CPU.v from project 1, we build upon it and implement this more advanced and realistic datapath that takes into consideration the fact that data memory is in reality much slower and has much more delay than in our previous simulation. On-chip data cache (DRAM) is a resource in high demand and low supply, and so a memory modularity for effective and quick communication between data memory and cache is critical. We determine in dcache_controller.v whether its a hit or miss.
+Using CPU.v from project 1, we build upon it and implement this more advanced and realistic datapath that takes into consideration the fact that data memory is in reality much slower and has much more delay than in our previous simulation. On-chip data cache (DRAM) is a resource in high demand and low supply, and so a memory modularity for effective and quick communication between off-chip data memory and cache is critical.
 
 ### dcache_controller.v
-This module functions to determine hit or miss. dcache_controller is responsible for connecting with the SRAM interface and the Data_Memory interface. The finite state machine for the cache controller is illustrated below.
+The controller determines whether the upcoming load/store is a hit or miss. Then according to the write back and write allocate policy, properly interact with CPU and Data_Memory. The finite state machine for the cache controller is illustrated below.
 ![FSM](FSM.png)
 
-As shown in our FSM, the controller alternates between the above 5 states. The FSM starts at an Idle state, and waits until there is a request (if no request or memory hit, the state will not change). Upon receiving a request and a miss, the state changes to Miss, and there are two possibilities; if the SRAM is dirty, controller will set write_back, mem_enable, mem_write true then change state to Writeback; otherwise, controller will set mem_enable true then Readmiss state will be initiated. If it changes to to Readmiss, Readmiss will wait to receive ack. If changes to to Writeback, then it will stay in Writeback until receiving an ack to go to Readmiss. Readmiss will wait to receive an ack (set mem_enable = 0, mem_write = 0, cache_write = 1) before going to the Readmissok state before finally unconditionally returning to the Idle state.
-
-The architecture and connection between the CPU and the Data Memory is illustrated here. We initialize our off-chip data_memory module in testbench.v.
-![Architecture](architecture.jpg)
-
-Below, we summarize the functionality of the dcache_sram module.
+As shown in our FSM, the controller alternates between the above 5 states. The FSM starts at an STATE_Idle state, and waits until there is a request (if no request or memory hit, the state will not change). Upon receiving a request and a miss, the state changes to STATE_Miss, and there are two possibilities; if the SRAM is dirty, controller will set write_back = 1, mem_enable = 1, mem_write = 1 (because we need to write back to memory and made data coherence between cache and memory) then change state to STATE_Writeback; otherwise, controller will set mem_enable true because we need to read data from memory then STATE_Readmiss state will be initiated. If it changes to STATE_Readmiss, STATE_Readmiss will wait to receive ack. If changes to STATE_Writeback, then it will stay in STATE_Writeback until receiving an ack implies the datas are ready then it will set mem_enable = 1,  mem_write = 0, write_back = 0 then go to STATE_Readmiss. STATE_Readmiss will wait to receive an ack (set mem_enable = 0, mem_write = 0, cache_write = 1) and write back to cache before going to the STATE_Readmissok state before finally unconditionally returning to the Idle state.
 
 ### dcache_sram.v
-We construct a two-dimensional register array LRU (size 16x2) that we use to implement the Least Recently Used replacement policy for 2-way associative cache. We also store the cache's data and tags two register arrays of an equal size to LRU. We implement the logic for write hit and for read miss. The write hit logic is called by either rst_i (reset input) or by the positive edge of the clock (clk_i). If rst_i is true, we set the values for the three registers (tag, data, and LRU) to 0. Otherwise, if enable_i and write_i are both true, we determine whether it is a way-1 hit, a way-2 hit, or a read miss, setting the register values accordingly. Finally, we implement our logic for read miss upon the positive clock edge.
+This module stores tags and data of the cache, and support 2-way associative and LRU replacement policy.
+We construct a two-dimensional register array LRU (size 16x2) that we use to implement the Least Recently Used replacement policy for 2-way associative cache, and set the least recently use block to 1 and the other to 0. 
+
+By either rst_i (reset input) or by the positive edge of the clock (clk_i) , when rst_i is true we initialize the cache and set the values for the all registers (tag, data, and LRU) to 0. Otherwise, if enable_i and write_i are both true, it means that we have a request to write int cache, we determine whether it is a way-0 hit, a way-1 hit, then we set the LRU then write data into cache or a read miss and we need to read data from memory, then write data to cache that are not recently used, then update the LRU to keep track on the least recently used way of the cache.
+
+By the positive edge of the clock (clk_i) and enable_i is true, it means that there is a read from cache and we need to set the LRU to know which block is recently used.
+
+We got three output named data_o, tag_o and hit_o in this module, when there is a hit on way-0 or way-1, then hit_o is true, otherwise is false. And if there is a hit on way-0 or way-1, data_o and tag_o will directly read from cache from the right index(addr_i), otherwise it will get the data update from data memory that is in the least recently used block.
 
 ### testbench.v
-We start by initializing the values for the pipeline registers. The logic for cache management is added in testbench (printing cache values, cache flushing, etc).
+We initialize reg in our pipeline registers before any instruction is executed, and connect CPU and off-chip Data_Memory in this module.
 
 ### CPU.v
-As stated above, the only change we make to the CPU is the removal of on-chip Data_Memory and the addition of dcache_controller.
+We replace the Data_Memory in our Project 1 with the cache controller, then add six port named mem_data_i, mem_ack_i, mem_data_o, mem_addr_o, mem_enable_o, mem_write_o to connect off-chip Data_Memory in module testbench.
 
 ## Development Environment
 OS: Mac OSX Mojave and Mac OS Catalina
