@@ -4,9 +4,9 @@
 
 ## Members & Teamwork
 Team Members & Contributions
-Sylvia Liao (R09922136): Wrote most of project code, organized/participated in meetings, wrote report  
-Seth Austin Harding (B06902101): Assisted with coding, organized/participated in meetings, wrote report  
-Sangwoo Yoo (B04902126): Wrote report and added graphs for explanation, participated in meetings  
+* Sylvia Liao (R09922136): Wrote most of project code, organized/participated in meetings, wrote report  
+* Seth Austin Harding (B06902101): Assisted with coding, organized/participated in meetings, wrote report  
+* Sangwoo Yoo (B04902126): Wrote report and added graphs for explanation, participated in meetings  
 
 ## Modules & Descriptions
 
