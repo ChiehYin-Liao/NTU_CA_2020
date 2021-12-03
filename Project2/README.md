@@ -1,6 +1,4 @@
-# SimuCPU
-
-# CA Project 2
+# CA Project 2 : Pipelined CPU With Cache
 
 ## Members & Teamwork
 Team Members & Contributions
