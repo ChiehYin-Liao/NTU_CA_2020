@@ -12,7 +12,7 @@ Using CPU.v from project 1, we build upon it and implement this more advanced an
 
 ### dcache_controller.v
 The controller determines whether the upcoming load/store is a hit or miss. Then according to the write back and write allocate policy, properly interact with CPU and Data_Memory. The finite state machine for the cache controller is illustrated below.
-![FSM](FSM.png)
+![FSM](README/FSM.png)
 
 As shown in our FSM, the controller alternates between the above 5 states. The FSM starts at an STATE_Idle state, and waits until there is a request (if no request or memory hit, the state will not change). Upon receiving a request and a miss, the state changes to STATE_Miss, and there are two possibilities; if the SRAM is dirty, controller will set write_back = 1, mem_enable = 1, mem_write = 1 (because we need to write back to memory and made data coherence between cache and memory) then change state to STATE_Writeback; otherwise, controller will set mem_enable true because we need to read data from memory then STATE_Readmiss state will be initiated. If it changes to STATE_Readmiss, STATE_Readmiss will wait to receive ack. If changes to STATE_Writeback, then it will stay in STATE_Writeback until receiving an ack implies the datas are ready then it will set mem_enable = 1,  mem_write = 0, write_back = 0 then go to STATE_Readmiss. STATE_Readmiss will wait to receive an ack (set mem_enable = 0, mem_write = 0, cache_write = 1) and write back to cache before going to the STATE_Readmissok state before finally unconditionally returning to the Idle state.
 
