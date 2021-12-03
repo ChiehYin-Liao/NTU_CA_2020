@@ -114,6 +114,6 @@ Compiler: iverilog
 IDE: Atom
 
 ## Team Members & Contributions
-Sylvia Liao (R09922136): Wrote most of project code, participated in meetings, wrote report
-Seth Austin Harding (B06902101): Provided base code & references, helping with coding, organized/participated in meetings, wrote report
-Sangyoo Woo (B04902126): Wrote report, participated in meetings
+* Sylvia Liao (R09922136): Wrote most of project code, participated in meetings, wrote report
+* Seth Austin Harding (B06902101): Provided base code & references, helping with coding, organized/participated in meetings, wrote report
+* Sangyoo Woo (B04902126): Wrote report, participated in meetings
