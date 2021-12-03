@@ -1,6 +1,6 @@
 # Final Project 2 : Pipelined CPU With Cache
 
-Extend Homework 4 to a pipelined CPU. It should take 32-bit binary codes as input and should do the corresponding RISC-V instructions, saving the result of arithmetic operations into the corresponding registers. 
+Extend Project 1 to have memory hierarchy. In Project 1, we still assume memory read/write can be done in a cycle. However, in reality, data memory is several order slower than CPU cycle. In this project, we use a 1KB L1 cache, whose read/write latency is still the same as CPU cycle, with a larger off-chip data memory, which requires 10 cycle for a read/write operation. 
 
 ## Hardware Specification
 
