@@ -1,10 +1,57 @@
-# CA Project 2 : Pipelined CPU With Cache
+# Final Project 2 : Pipelined CPU With Cache
 
-## Members & Teamwork
-Team Members & Contributions
-* Sylvia Liao (R09922136): Wrote most of project code, organized/participated in meetings, wrote report  
-* Seth Austin Harding (B06902101): Assisted with coding, organized/participated in meetings, wrote report  
-* Sangwoo Yoo (B04902126): Wrote report and added graphs for explanation, participated in meetings  
+Extend Homework 4 to a pipelined CPU. It should take 32-bit binary codes as input and should do the corresponding RISC-V instructions, saving the result of arithmetic operations into the corresponding registers. 
+
+## Hardware Specification
+
+* Register file: 32 Registers (Write at the rising edge ofthe clock), 32-bit
+* Instruction Memory: 1KB
+* Data Memory: 4 KBytes
+* 5-stage pipeline (IF, ID, EX, MEM, WB)
+* Data hazard
+    * Implement the forwarding unit to reduce or avoid the stall cycles
+    * The data dependency instruction following `lw` must stall 1 cycle
+    * No need to forward to ID stage
+* Control hazard
+    * The instruction following `beq` instruction may need to stall 1 cycle
+    * Pipeline Flush
+
+* Off-chip Data Memory
+    * Size: 16KB
+    * Data width: 32 Bytes
+    * Memory access latency: 10 cycles (send an ack when finish access)
+
+* L1 Data Cache • 
+    * Size: 1KB
+    * Associative: 2-way
+    * Replacement policy: LRU
+    * Cache line size: 32 Bytes
+    * Write hit policy: write back
+    * Write miss policy: write allocate
+    * offset: 5 bits, index: 4 bits, tag: 23 bits
+
+## Required Instruction Set
+
+* `and`  (bitwise and)
+* `xor`  (bitwise exclusive or)
+* `sll`  (shift left logically)
+* `add`  (addition)
+* `sub`  (subtraction)
+* `mul`  (multiplication)
+* `addi` (addition)
+* `srai` (shift right arithmetically)
+* `lw` (load word)
+* `sw` (store word)
+* `beq` (branch if equal)
+
+## Project1 to Project2
+![project1to2](README/project1to2.png)
+
+## System Block Diagram
+![blockdiagram](README/blockdiagram.png)
+
+## Data Path
+![project2_datapath](README/project2_datapath.png)
 
 ## Modules & Descriptions
 
@@ -36,6 +83,12 @@ We replace the Data_Memory in our Project 1 with the cache controller, then add 
 OS: Mac OSX Mojave and Mac OS Catalina
 Compiler: iverilog
 IDE: Atom and Sublime
+
+## Members & Teamwork
+Team Members & Contributions
+* Sylvia Liao (R09922136): Wrote most of project code, organized/participated in meetings, wrote report  
+* Seth Austin Harding (B06902101): Assisted with coding, organized/participated in meetings, wrote report  
+* Sangwoo Yoo (B04902126): Wrote report and added graphs for explanation, participated in meetings  
 
 ## Difficulties Encountered and Solutions in This Project
 We had several bugs in our program that caused the PC to output 0 and the signal to output X for every cycle. They were mainly caused by minor syntax errors such as in the Verilog difference between 1'b0 and 0, the logic in some of the pipeline registers, and the logic in dcache_controller.v as well as extraneous outputs from modified version of testbench. These bugs were fixed simply by simply reviewing in more detail the Verilog syntax and making sure that the operations of each module are logically equivalent to their corresponding explanations in the textbook.
