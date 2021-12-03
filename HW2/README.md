@@ -2,7 +2,7 @@
 ### Task
 
 * To use a RISC-V simulator to develop a simple calculator program which supports `+`, `-`, `*` and `/` operation.
-* Input : Read from `input.txt`. Input file will contain 3 lines, where −1024 ≤ `A`,`B` ≤ 1024; `A`, `B`, `<operator>` $\in$ $Z$
+* Input : Read from `input.txt`. Input file will contain 3 lines, where −1024 ≤ `A`,`B` ≤ 1024; `A`, `B`, `<operator>` ∈ Z
     * Line1: `A`
     * Line2: `<operator>`
     * Line3: `B` 
