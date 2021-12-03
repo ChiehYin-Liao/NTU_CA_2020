@@ -22,7 +22,7 @@ Implement a simple RISC-V CPU with Verilog. The CPU is single-cycle, all operati
 
 ## Data Path
 
-![hw4_datapath](hw4_datapath.png)
+![hw4_datapath](README/hw4_datapath.png)
 
 ## Implementation
 
