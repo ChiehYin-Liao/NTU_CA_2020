@@ -2,7 +2,7 @@
 ### Task
 
 * Solve a recurrence equation using RISC-V:
-    * f(n) = f(floor(n/2))+floor(n/4)), if n ≥ 2
+    * f(n) = f(floor(n/2)) + floor(n/4)) + n, if n ≥ 2
     * f(n) = 1                        ,otherwise
     * n ∈ Z, −1024 ≤ n ≤ 1024
 
